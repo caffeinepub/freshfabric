@@ -44,7 +44,7 @@ function Navbar() {
             <Leaf className="w-4 h-4" />
           </span>
           <span className="font-display font-bold text-xl text-foreground tracking-tight">
-            FreshFabric
+            Nomold
           </span>
         </a>
         <Button
@@ -80,10 +80,14 @@ function HeroSection() {
               Common Household Problem
             </Badge>
 
-            <h1 className="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl text-foreground leading-tight mb-5">
+            <h1 className="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl text-foreground leading-tight mb-3">
               Black fungus dots{" "}
               <span className="text-primary">on your clothes?</span>
             </h1>
+
+            <p className="font-display font-semibold text-xl md:text-2xl text-primary mb-5 tracking-tight">
+              End the stain story.
+            </p>
 
             <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg">
               A new 10-minute fabric spray that helps remove black fungus stains
@@ -216,8 +220,7 @@ const steps = [
     step: 1,
     emoji: "🧴",
     title: "Spray on the stain",
-    description:
-      "Apply FreshFabric spray directly onto the black fungus stain.",
+    description: "Apply Nomold spray directly onto the black fungus stain.",
   },
   {
     id: "wait",
@@ -631,10 +634,10 @@ function Footer() {
       <div className="container mx-auto px-4 text-center space-y-2">
         <div className="flex items-center justify-center gap-2 font-display font-bold text-lg">
           <Leaf className="w-4 h-4 text-primary" />
-          FreshFabric
+          Nomold
         </div>
         <p className="text-sm text-white/60">
-          © {year} FreshFabric — Early Access Program
+          © {year} Nomold — Early Access Program
         </p>
         <p className="text-xs text-white/40">
           Built with love using{" "}
