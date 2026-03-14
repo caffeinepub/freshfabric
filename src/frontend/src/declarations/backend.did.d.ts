@@ -14,11 +14,16 @@ export interface Signup {
   'hasFungusIssue' : boolean,
   'city' : string,
   'name' : string,
+  'submittedAt' : bigint,
+  'email' : string,
   'phoneNumber' : string,
 }
 export interface _SERVICE {
   'getAllSignups' : ActorMethod<[], Array<Signup>>,
-  'submitSignup' : ActorMethod<[string, string, boolean, string], undefined>,
+  'submitSignup' : ActorMethod<
+    [string, string, boolean, string, string],
+    undefined
+  >,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

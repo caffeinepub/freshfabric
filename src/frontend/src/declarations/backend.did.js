@@ -12,12 +12,18 @@ export const Signup = IDL.Record({
   'hasFungusIssue' : IDL.Bool,
   'city' : IDL.Text,
   'name' : IDL.Text,
+  'submittedAt' : IDL.Int,
+  'email' : IDL.Text,
   'phoneNumber' : IDL.Text,
 });
 
 export const idlService = IDL.Service({
   'getAllSignups' : IDL.Func([], [IDL.Vec(Signup)], ['query']),
-  'submitSignup' : IDL.Func([IDL.Text, IDL.Text, IDL.Bool, IDL.Text], [], []),
+  'submitSignup' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Bool, IDL.Text, IDL.Text],
+      [],
+      [],
+    ),
 });
 
 export const idlInitArgs = [];
@@ -27,12 +33,18 @@ export const idlFactory = ({ IDL }) => {
     'hasFungusIssue' : IDL.Bool,
     'city' : IDL.Text,
     'name' : IDL.Text,
+    'submittedAt' : IDL.Int,
+    'email' : IDL.Text,
     'phoneNumber' : IDL.Text,
   });
   
   return IDL.Service({
     'getAllSignups' : IDL.Func([], [IDL.Vec(Signup)], ['query']),
-    'submitSignup' : IDL.Func([IDL.Text, IDL.Text, IDL.Bool, IDL.Text], [], []),
+    'submitSignup' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Bool, IDL.Text, IDL.Text],
+        [],
+        [],
+      ),
   });
 };
 

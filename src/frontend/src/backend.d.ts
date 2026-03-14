@@ -11,9 +11,11 @@ export interface Signup {
     hasFungusIssue: boolean;
     city: string;
     name: string;
+    submittedAt: bigint;
+    email: string;
     phoneNumber: string;
 }
 export interface backendInterface {
     getAllSignups(): Promise<Array<Signup>>;
-    submitSignup(name: string, city: string, hasFungusIssue: boolean, phoneNumber: string): Promise<void>;
+    submitSignup(name: string, city: string, hasFungusIssue: boolean, phoneNumber: string, email: string): Promise<void>;
 }

@@ -24,6 +24,7 @@ export function useSubmitSignup() {
       city: string;
       hasFungusIssue: boolean;
       phoneNumber: string;
+      email: string;
     }) => {
       if (!actor) throw new Error("Actor not ready");
       await actor.submitSignup(
@@ -31,6 +32,7 @@ export function useSubmitSignup() {
         data.city,
         data.hasFungusIssue,
         data.phoneNumber,
+        data.email,
       );
     },
     onSuccess: () => {

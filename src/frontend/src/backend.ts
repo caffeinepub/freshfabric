@@ -93,11 +93,13 @@ export interface Signup {
     hasFungusIssue: boolean;
     city: string;
     name: string;
+    submittedAt: bigint;
+    email: string;
     phoneNumber: string;
 }
 export interface backendInterface {
     getAllSignups(): Promise<Array<Signup>>;
-    submitSignup(name: string, city: string, hasFungusIssue: boolean, phoneNumber: string): Promise<void>;
+    submitSignup(name: string, city: string, hasFungusIssue: boolean, phoneNumber: string, email: string): Promise<void>;
 }
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
@@ -115,17 +117,17 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async submitSignup(arg0: string, arg1: string, arg2: boolean, arg3: string): Promise<void> {
+    async submitSignup(arg0: string, arg1: string, arg2: boolean, arg3: string, arg4: string): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.submitSignup(arg0, arg1, arg2, arg3);
+                const result = await this.actor.submitSignup(arg0, arg1, arg2, arg3, arg4);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.submitSignup(arg0, arg1, arg2, arg3);
+            const result = await this.actor.submitSignup(arg0, arg1, arg2, arg3, arg4);
             return result;
         }
     }

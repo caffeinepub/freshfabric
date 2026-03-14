@@ -410,6 +410,7 @@ function EarlyAccessBanner() {
 function FormSection() {
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
+  const [email, setEmail] = useState("");
   const [hasFungus, setHasFungus] = useState<boolean | null>(null);
   const [phone, setPhone] = useState("");
 
@@ -421,6 +422,7 @@ function FormSection() {
     mutate({
       name: name.trim(),
       city: city.trim(),
+      email: email.trim(),
       hasFungusIssue: hasFungus,
       phoneNumber: phone.trim(),
     });
@@ -511,6 +513,27 @@ function FormSection() {
                     onChange={(e) => setCity(e.target.value)}
                     required
                     autoComplete="address-level2"
+                    className="rounded-lg border-border focus-visible:ring-primary/40"
+                  />
+                </div>
+
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="email"
+                    className="font-semibold text-sm text-foreground"
+                  >
+                    Email Address <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="email"
+                    data-ocid="form.email.input"
+                    type="email"
+                    placeholder="e.g. priya@gmail.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    autoComplete="email"
                     className="rounded-lg border-border focus-visible:ring-primary/40"
                   />
                 </div>
@@ -668,7 +691,9 @@ function AdminPage() {
               Admin — Early Testers
             </h1>
             <p className="text-muted-foreground text-sm mt-1">
-              All signup submissions
+              {signups
+                ? `Total: ${signups.length} signup${signups.length !== 1 ? "s" : ""}`
+                : "All signup submissions"}
             </p>
           </div>
           <a href="/" className="text-sm text-primary hover:underline">
@@ -708,10 +733,16 @@ function AdminPage() {
                     City
                   </TableHead>
                   <TableHead className="font-bold text-foreground">
+                    Email
+                  </TableHead>
+                  <TableHead className="font-bold text-foreground">
                     Has Fungus Issue
                   </TableHead>
                   <TableHead className="font-bold text-foreground">
                     Phone
+                  </TableHead>
+                  <TableHead className="font-bold text-foreground">
+                    Submitted At
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -719,17 +750,22 @@ function AdminPage() {
                 {!signups || signups.length === 0 ? (
                   <TableRow>
                     <TableCell
-                      colSpan={4}
+                      colSpan={6}
                       className="text-center text-muted-foreground py-12"
+                      data-ocid="admin.empty_state"
                     >
                       No signups yet.
                     </TableCell>
                   </TableRow>
                 ) : (
                   signups.map((s, i) => (
-                    <TableRow key={`${s.name}-${s.phoneNumber}-${i}`}>
+                    <TableRow
+                      key={`${s.name}-${s.phoneNumber}-${i}`}
+                      data-ocid={`admin.item.${i + 1}`}
+                    >
                       <TableCell className="font-medium">{s.name}</TableCell>
                       <TableCell>{s.city}</TableCell>
+                      <TableCell>{s.email}</TableCell>
                       <TableCell>
                         {s.hasFungusIssue ? (
                           <Badge className="bg-primary/10 text-primary border-primary/20 font-semibold">
@@ -745,6 +781,11 @@ function AdminPage() {
                         )}
                       </TableCell>
                       <TableCell>{s.phoneNumber}</TableCell>
+                      <TableCell className="text-muted-foreground text-sm">
+                        {new Date(
+                          Number(s.submittedAt / 1_000_000n),
+                        ).toLocaleString()}
+                      </TableCell>
                     </TableRow>
                   ))
                 )}
