@@ -14,6 +14,7 @@ import {
   AlertTriangle,
   ArrowRight,
   CheckCircle2,
+  Download,
   Leaf,
   Loader2,
 } from "lucide-react";
@@ -32,6 +33,44 @@ function scrollToForm() {
 function useRoute() {
   const [path] = useState(() => window.location.pathname);
   return path;
+}
+
+// ── CSV export helper ─────────────────────────────────────────────────────────
+type Signup = {
+  name: string;
+  city: string;
+  email: string;
+  hasFungusIssue: boolean;
+  phoneNumber: string;
+  submittedAt: bigint;
+};
+
+function exportCsv(signups: Signup[]) {
+  const headers = [
+    "Name",
+    "City",
+    "Email",
+    "Has Fungus Issue",
+    "Phone",
+    "Submitted At",
+  ];
+  const escapeCell = (v: string) => `"${v.replace(/"/g, '""')}"`;
+  const rows = signups.map((s) => [
+    escapeCell(s.name),
+    escapeCell(s.city),
+    escapeCell(s.email),
+    s.hasFungusIssue ? "Yes" : "No",
+    escapeCell(s.phoneNumber),
+    escapeCell(new Date(Number(s.submittedAt / 1_000_000n)).toLocaleString()),
+  ]);
+  const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "nomold-early-testers.csv";
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 // ── Navbar ───────────────────────────────────────────────────────────────────
@@ -682,10 +721,16 @@ function Footer() {
 function AdminPage() {
   const { data: signups, isLoading, isError } = useGetAllSignups();
 
+  const handleExportCsv = () => {
+    if (signups && signups.length > 0) {
+      exportCsv(signups);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-muted/40">
       <div className="container mx-auto px-4 py-12">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="font-display font-bold text-2xl text-foreground">
               Admin — Early Testers
@@ -696,9 +741,22 @@ function AdminPage() {
                 : "All signup submissions"}
             </p>
           </div>
-          <a href="/" className="text-sm text-primary hover:underline">
-            ← Back to landing page
-          </a>
+          <div className="flex items-center gap-3">
+            <Button
+              data-ocid="admin.secondary_button"
+              variant="outline"
+              size="sm"
+              disabled={!signups || signups.length === 0}
+              onClick={handleExportCsv}
+              className="flex items-center gap-2 border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/60 font-semibold transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Download CSV
+            </Button>
+            <a href="/" className="text-sm text-primary hover:underline">
+              ← Back to landing page
+            </a>
+          </div>
         </div>
 
         {isLoading && (
